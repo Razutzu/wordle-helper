@@ -9,12 +9,10 @@ export default {
 
 		if (session.done) return interaction.reply({ content: "Your session has ended", flags: MessageFlags.Ephemeral }).catch((err) => client.err(err));
 
-		if (session.typingPosition > 4)
-			return interaction.reply({ content: "You can now either **send** or **delete**", flags: MessageFlags.Ephemeral }).catch((err) => client.err(err));
+		if (session.typingPosition < 5)
+			return interaction.reply({ content: "Set the color for all position before sending", flags: MessageFlags.Ephemeral }).catch((err) => client.err(err));
 
-		const color = interaction.customId.split("_").at(-1);
-
-		session.type(interaction, color);
+		session.next(interaction);
 
 		await interaction.deferUpdate();
 	},
