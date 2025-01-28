@@ -8,6 +8,6 @@ export default {
 	run: async (interaction) => {
 		if (client.sessions.has(interaction.user.id)) return interaction.reply({ content: "You have an active session.", ephemeral: true }).catch((err) => client.err(err));
 
-		client.sessions.set(interaction.user.id, new Session());
+		client.sessions.set(interaction.user.id, new Session(interaction));
 	},
 };
