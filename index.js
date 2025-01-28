@@ -8,6 +8,9 @@ dotenv.config();
 class ExtendedClient extends Client {
 	constructor(options) {
 		super(options);
+
+		this.sessions = new Map();
+		this.letters = new Map();
 	}
 	log(color, tag, msg) {
 		return console.log(`${chalk.blue(`[ ${new Date().toLocaleTimeString()} ]`)} ${chalk[color](`[${tag}]`)} ${msg}`);
