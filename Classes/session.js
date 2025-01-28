@@ -8,7 +8,10 @@ class Session {
 	constructor(interaction) {
 		this.id = interaction.user.id;
 
+		this.done = false;
 		this.status = { tryNow: this.wordToCharacters(wordsStart[Math.floor(Math.random() * wordsStart.length)]), lastTry: ["bkb", "bkb", "bkb", "bkb", "bkb"] };
+
+		this.typingPosition = 0;
 
 		this.message = null;
 		this.messageData = {
@@ -21,14 +24,14 @@ class Session {
 					.setFields(this.statusToFields()),
 			],
 			components: [
-                new ActionRowBuilder().addComponents(
+				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`done_${interaction.user.id}`).setStyle(ButtonStyle.Success).setEmoji("✅"),
-					new ButtonBuilder().setCustomId(`delete_${interaction.user.id}`).setStyle(ButtonStyle.Danger).setEmoji("⬅️"),
+					new ButtonBuilder().setCustomId(`delete_${interaction.user.id}`).setStyle(ButtonStyle.Danger).setEmoji("⬅️")
 				),
 				new ActionRowBuilder().addComponents(
-					new ButtonBuilder().setCustomId(`green_${interaction.user.id}`).setStyle(ButtonStyle.Secondary).setEmoji(process.env.greenBoxEmojiId),
-					new ButtonBuilder().setCustomId(`yellow_${interaction.user.id}`).setStyle(ButtonStyle.Secondary).setEmoji(process.env.yellowBoxEmojiId),
-					new ButtonBuilder().setCustomId(`gray_${interaction.user.id}`).setStyle(ButtonStyle.Secondary).setEmoji(process.env.grayBoxEmojiId)
+					new ButtonBuilder().setCustomId(`type_${interaction.user.id}_gn`).setStyle(ButtonStyle.Secondary).setEmoji(process.env.greenBoxEmojiId),
+					new ButtonBuilder().setCustomId(`type_${interaction.user.id}_yw`).setStyle(ButtonStyle.Secondary).setEmoji(process.env.yellowBoxEmojiId),
+					new ButtonBuilder().setCustomId(`type_${interaction.user.id}_gy`).setStyle(ButtonStyle.Secondary).setEmoji(process.env.grayBoxEmojiId)
 				),
 			],
 		};
@@ -45,6 +48,15 @@ class Session {
 			if (interaction) await this.updateMessage(interaction, true);
 			client.err(err);
 		});
+	}
+	async type(interaction, button) {
+		this.status.tryNow[this.typingPosition] = `${this.status.tryNow[this.typingPosition][0]}${button}`;
+
+		this.typingPosition++;
+
+		this.messageData.embeds[0].setFields(this.statusToFields());
+
+		return await this.updateMessage(interaction, false);
 	}
 	wordToCharacters(word) {
 		let content = [];
