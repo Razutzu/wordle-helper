@@ -29,9 +29,12 @@ class Session {
 					.setFields(this.statusToFields()),
 			],
 			components: [
-				new ActionRowBuilder().addComponents(new ButtonBuilder().setCustomId(`done_${interaction.user.id}`).setStyle(ButtonStyle.Success).setEmoji("✅")),
 				new ActionRowBuilder().addComponents(
-					new ButtonBuilder().setCustomId(`send_${interaction.user.id}`).setStyle(ButtonStyle.Primary).setEmoji("➡️"),
+					new ButtonBuilder().setCustomId(`done_${interaction.user.id}`).setStyle(ButtonStyle.Success).setEmoji("✅"),
+					new ButtonBuilder().setCustomId(`fail_${interaction.user.id}`).setStyle(ButtonStyle.Success).setEmoji("❌")
+				),
+				new ActionRowBuilder().addComponents(
+					new ButtonBuilder().setCustomId(`send_${interaction.user.id}`).setStyle(ButtonStyle.Primary).setEmoji("⬆️"),
 					new ButtonBuilder().setCustomId(`type_${interaction.user.id}_gn`).setStyle(ButtonStyle.Secondary).setEmoji(process.env.greenBoxEmojiId),
 					new ButtonBuilder().setCustomId(`type_${interaction.user.id}_yw`).setStyle(ButtonStyle.Secondary).setEmoji(process.env.yellowBoxEmojiId),
 					new ButtonBuilder().setCustomId(`type_${interaction.user.id}_gy`).setStyle(ButtonStyle.Secondary).setEmoji(process.env.grayBoxEmojiId),
@@ -96,6 +99,8 @@ class Session {
 	}
 	async fail(interaction) {
 		this.messageData.embeds[0].setColor(Colors.Red).setDescription("I'm sorry, but I am not able to help you with this one").setFields(this.statusToFields(true));
+
+		if (this.status.lastTry != this.status.tryNow) this.status.lastTry = this.status.tryNow;
 
 		return await this.end(interaction);
 	}
