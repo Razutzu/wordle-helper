@@ -31,7 +31,7 @@ class Session {
 			components: [
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`done_${interaction.user.id}`).setStyle(ButtonStyle.Success).setEmoji("✅"),
-					new ButtonBuilder().setCustomId(`fail_${interaction.user.id}`).setStyle(ButtonStyle.Success).setEmoji("❌")
+					new ButtonBuilder().setCustomId(`fail_${interaction.user.id}`).setStyle(ButtonStyle.Secondary).setEmoji("❌")
 				),
 				new ActionRowBuilder().addComponents(
 					new ButtonBuilder().setCustomId(`send_${interaction.user.id}`).setStyle(ButtonStyle.Primary).setEmoji("⬆️"),
