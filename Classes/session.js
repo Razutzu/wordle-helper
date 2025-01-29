@@ -167,9 +167,11 @@ class Session {
 			];
 
 		return [
-			{ name: "Tries", value: `${this.try}` },
-			{ name: "Last try:", value: this.charactersToString(this.status.lastTry) },
-			{ name: "Try now:", value: this.charactersToString(this.status.tryNow, true) },
+			{ name: "Tries", value: `${this.try}`, inline: true },
+			{ name: "Possible words: ", value: `${this.words.length}`, inline: true },
+			{ name: "\u200B", value: "\u200B", inline: true },
+			{ name: "Try now:", value: this.charactersToString(this.status.tryNow, true), inline: true },
+			{ name: "Last try:", value: this.charactersToString(this.status.lastTry), inline: true },
 		];
 	}
 }
